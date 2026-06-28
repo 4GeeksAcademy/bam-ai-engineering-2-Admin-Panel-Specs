@@ -21,6 +21,7 @@ Project quality constraints:
 - Top bar must include a dark/light mode toggle implemented with Tailwind dark utilities.
 - Mode selection must persist while navigating between sections.
 - Structure should be semantic and implementation-ready for handoff.
+- The interface must be intentionally designed for mobile, tablet, and desktop breakpoints rather than only scaling down from desktop.
 
 Visual theme constraints:
 - Light mode must use a sunset-inspired palette built from warm cream, sand, coral, amber, terracotta, and muted orange tones.
@@ -60,6 +61,23 @@ Global shell requirements:
 - Theme switch changes palette, contrast, and emphasis without changing information architecture.
 - The sidebar, top bar, cards, tables, modals, and badges must all have defined light and dark appearances.
 
+## 3.2 Responsive Breakpoints
+
+1. Target breakpoints:
+- Mobile layout must be defined for small screens below the tablet breakpoint.
+- Tablet layout must be defined as a distinct intermediate experience, not just a compressed desktop view.
+- Desktop layout must preserve the full admin shell with persistent sidebar presentation.
+
+2. Navigation behavior by size:
+- On desktop, the sidebar remains fully visible.
+- On tablet, the sidebar may collapse to a narrower rail or slide-out panel, but all six sections must remain easy to access.
+- On mobile, navigation should prioritize space efficiency through a drawer, slide-over menu, or compact collapsed pattern.
+
+3. Content behavior by size:
+- Dense tables must remain usable on tablet and mobile through horizontal scrolling, stacked summaries, or controlled overflow.
+- Cards and content blocks must reflow cleanly without clipped text, overlapping controls, or unreachable actions.
+- Modals must resize for smaller screens and maintain readable padding, safe margins, and accessible close controls.
+
 ## 4) Section Specifications
 
 Each section below includes concrete visual and interaction requirements that are mandatory for implementation.
@@ -68,6 +86,7 @@ Each section below includes concrete visual and interaction requirements that ar
 
 1. Metric grid:
 - Show exactly four metric cards above the fold in a responsive 2x2 layout on desktop/tablet.
+- On mobile, metric cards may stack to a single column or two-per-row depending on available width, but all four metrics must remain visible and legible.
 - Metrics: total revenue (month), discount/coupon losses, active agents, failing agents.
 - Each card includes icon, label, and hardcoded value.
 
@@ -88,6 +107,7 @@ Each section below includes concrete visual and interaction requirements that ar
 - Render a table with at least 5 hardcoded rows.
 - Columns: Name, Email, Plan, Status, Actions.
 - Status is shown as a badge per user row.
+- On smaller screens, the table must remain usable through horizontal scroll or a stacked row treatment without losing access to actions.
 
 2. Row actions:
 - Each row has a three-dot action trigger (⋮).
@@ -105,6 +125,7 @@ Each section below includes concrete visual and interaction requirements that ar
 - Show at least 4 hardcoded agents.
 - Each item includes agent name, owner, status badge, and skills summary.
 - Status values include active, inactive, and failing.
+- On mobile and tablet, the listing may shift from row layout to stacked cards if that improves readability.
 
 2. Collapsible skill list:
 - Skills are collapsed by default for each agent.
@@ -122,6 +143,7 @@ Each section below includes concrete visual and interaction requirements that ar
 - Display at least 4 hardcoded skills.
 - Each skill shows Name, short Description, and Enabled by X agents counter.
 - Items can be cards or rows as long as metadata is clear.
+- The skill catalog must reflow gracefully between mobile, tablet, and desktop widths without truncated descriptions.
 
 2. Context explanation:
 - Include a short explanatory panel defining skill in AgentHub context.
@@ -139,6 +161,7 @@ Each section below includes concrete visual and interaction requirements that ar
 - Render at least 4 hardcoded contract rows.
 - Columns: Client, Agent, Contracted Skills, Start Date, End Date, Total Amount Paid, Actions.
 - Data formatting must be legible and consistent.
+- On smaller breakpoints, long contract details must wrap or scroll in a controlled way without hiding the actions column.
 
 2. Contract detail action:
 - Each row includes three-dot action dropdown.
@@ -156,6 +179,7 @@ Each section below includes concrete visual and interaction requirements that ar
 - Render at least 6 hardcoded error records.
 - Each record includes timestamp, agent name, error type, and short description.
 - Entries are displayed in list or table format.
+- The error log must maintain readable timestamps, badge labels, and action access on tablet and mobile widths.
 
 2. Severity/type badges:
 - Error type/severity must be color-coded using badges.
@@ -186,6 +210,7 @@ Reusable UI components to implement across sections:
 5. Modal overlay
 - Backdrop + centered modal panel + close control.
 - Close on backdrop click and close button.
+- Modal width and spacing must adapt for mobile and tablet viewports.
 
 6. Status/error badge
 - Pill-like badge with semantic color variants.
@@ -320,6 +345,25 @@ MAIN CONTENT
 +--------------------------------------------------------------+
 ```
 
+### 7.8 Mobile Adaptation Wire
+
+```text
++--------------------------------------------------+
+| Top Bar: [Menu] [Section Title]   [Theme Toggle] |
++--------------------------------------------------+
+| Slide-out nav or compact drawer for 6 sections   |
++--------------------------------------------------+
+| Metric cards stack vertically or 2-up as space   |
+| allows                                           |
++--------------------------------------------------+
+| Tables become scrollable containers or stacked   |
+| summary cards with visible actions               |
++--------------------------------------------------+
+| Modals shrink to near-full-width sheets/panels   |
+| with obvious close control                       |
++--------------------------------------------------+
+```
+
 ## 8) Acceptance Criteria (Numbered, Verifiable)
 
 1. SPECS file exists at repository root as SPECS.md and is complete before HTML implementation starts.
@@ -342,10 +386,13 @@ MAIN CONTENT
 18. Light mode uses a sunset palette and dark mode uses a black with neon-gray palette across primary surfaces and components.
 19. Cross-section entity naming is consistent (same agent can appear in agent list, contracts, and error log).
 20. Semantic HTML structure is required in implementation guidance (nav, header, main, section, table where applicable).
-21. Layout requirements include usable desktop and tablet presentation.
-22. Wire sketches section is present and includes shell, dashboard, table views, agent list, skills, modal, and tablet adaptation.
-23. Stitch-generated visual proposal is explicitly treated as design guidance and not final source of truth.
-24. Git workflow requirement is explicit: SPECS.md commit must happen before first HTML commit.
+21. Layout requirements include explicit usable mobile, tablet, and desktop presentations.
+22. Navigation behavior is defined for desktop, tablet, and mobile breakpoints.
+23. Tables and dense data views remain usable on smaller screens without hiding required actions.
+24. Modals resize appropriately for mobile and tablet widths.
+25. Wire sketches section is present and includes shell, dashboard, table views, agent list, skills, modal, tablet adaptation, and mobile adaptation.
+26. Stitch-generated visual proposal is explicitly treated as design guidance and not final source of truth.
+27. Git workflow requirement is explicit: SPECS.md commit must happen before first HTML commit.
 
 ## 9) Delivery Workflow Notes
 
